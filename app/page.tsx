@@ -1,12 +1,14 @@
 import React from "react";
 // import Form from "@/components/Form";
-import Form from "@/components/Form_again";
+// import Form from "@/components/Form_again";
+import Home from "./Home/page";
 
 const page = () => {
   return (
     <div>
       {/* <Form /> */}
-      <Form />
+      {/* <Form /> */}
+      <Home />
     </div>
   );
 };

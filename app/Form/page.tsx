@@ -10,12 +10,13 @@ type checkHere = {
   country: string;
   coding: string;
   aboutMe: string;
+  gender: string;
 };
 
 const Form = () => {
   // use of the useRef:
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<checkHere>({});
   const name_ref = useRef<HTMLInputElement | null>(null);
   const email_ref = useRef<HTMLInputElement | null>(null);
   const password_ref = useRef<HTMLInputElement | null>(null);
@@ -75,7 +76,7 @@ const Form = () => {
     // validation:
 
     // for name:
-    const newErros = {};
+    const newErros: checkHere = {};
     if (!name) {
       // const msg = "Name is required.";
       // name_ref.current?.setCustomValidity(msg);
@@ -146,9 +147,9 @@ const Form = () => {
     // for gender:
 
     if (
-      !male_ref.current.checked &&
-      !female_ref.current.checked &&
-      !others_ref.current.checked
+      !male_ref.current?.checked &&
+      !female_ref.current?.checked &&
+      !others_ref.current?.checked
     ) {
       // male_ref.current.setCustomValidity("Please select a gender.");
       newErros.gender = "Please select a gender.";
@@ -158,7 +159,7 @@ const Form = () => {
     if (!aboutMe) {
       newErros.aboutMe = "Please fill the field.";
     }
-    if (aboutMe.length < 10 || aboutMe > 50) {
+    if (aboutMe.length < 10 || aboutMe.length > 50) {
       newErros.aboutMe = "The characters should between 10 and 50.";
     }
 
@@ -167,19 +168,19 @@ const Form = () => {
     } else {
       alert("Form Submitted.");
       setErrors({});
-      name_ref.current.value = "";
-      email_ref.current.value = "";
-      password_ref.current.value = "";
+      name_ref.current!.value = "";
+      email_ref.current!.value = "";
+      password_ref.current!.value = "";
       date_ref.current!.value = "";
-      male_ref.current.checked = false;
-      female_ref.current.checked = false;
-      others_ref.current.checked = false;
-      country_ref.current.value = "Nepal";
-      writing_ref.current.checked = false;
-      design_ref.current.checked = false;
-      coding_ref.current.checked = false;
-      testing_ref.current.checked = false;
-      aboutme_ref.current.value = "";
+      male_ref.current!.checked = false;
+      female_ref.current!.checked = false;
+      others_ref.current!.checked = false;
+      country_ref.current!.value = "Nepal";
+      writing_ref.current!.checked = false;
+      design_ref.current!.checked = false;
+      coding_ref.current!.checked = false;
+      testing_ref.current!.checked = false;
+      aboutme_ref.current!.value = "";
     }
   };
   // report the validity:
@@ -231,6 +232,7 @@ const Form = () => {
           {errors.password && <p className="text-red-600">{errors.password}</p>}
 
           {/* Date */}
+          <p className="text-blue-600 mb-1 pl-1 text-[14px]">Date of Birth</p>
           <input
             type="date"
             placeholder="Date of Birth"
