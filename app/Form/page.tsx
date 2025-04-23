@@ -1,53 +1,59 @@
 "use client";
 // import { console } from "inspector";
-import React, { useRef, useState } from "react";
-
-type checkHere = {
-  name: string;
-  email: string;
-  password: string;
-  date: string;
-  country: string;
-  coding: string;
-  aboutMe: string;
-  gender: string;
-};
+import React, { startTransition, useRef, useState, useTransition } from "react";
+import { checkHere } from "@/components/utils/check";
+import { ToastContainer, toast } from "react-toastify";
 
 const Form = () => {
   // use of the useRef:
 
   const [errors, setErrors] = useState<checkHere>({});
-  const name_ref = useRef<HTMLInputElement | null>(null);
-  const email_ref = useRef<HTMLInputElement | null>(null);
-  const password_ref = useRef<HTMLInputElement | null>(null);
-  const date_ref = useRef<HTMLInputElement | null>(null);
-  const male_ref = useRef<HTMLInputElement | null>(null);
-  const female_ref = useRef<HTMLInputElement | null>(null);
-  const others_ref = useRef<HTMLInputElement | null>(null);
-  // const gender_ref = useRef();
-  const country_ref = useRef<HTMLInputElement | null>(null);
-  const writing_ref = useRef<HTMLInputElement | null>(null);
-  const design_ref = useRef<HTMLInputElement | null>(null);
-  const coding_ref = useRef<HTMLInputElement | null>(null);
-  const testing_ref = useRef<HTMLInputElement | null>(null);
-  const aboutme_ref = useRef<HTMLInputElement | null>(null);
+  const [pending, startTransition] = useTransition();
+  const inputref = {
+    name_ref: useRef<HTMLInputElement>(null),
+    email_ref: useRef<HTMLInputElement>(null),
+    password_ref: useRef<HTMLInputElement>(null),
+    date_ref: useRef<HTMLInputElement>(null),
+    male_ref: useRef<HTMLInputElement>(null),
+    female_ref: useRef<HTMLInputElement>(null),
+    others_ref: useRef<HTMLInputElement>(null),
+    country_ref: useRef<HTMLInputElement>(null),
+    writing_ref: useRef<HTMLInputElement>(null),
+    design_ref: useRef<HTMLInputElement>(null),
+    coding_ref: useRef<HTMLInputElement>(null),
+    testing_ref: useRef<HTMLInputElement>(null),
+    aboutme_ref: useRef<HTMLInputElement>(null),
+  };
+
+  // const name_ref = useRef<HTMLInputElement | null>(null);
+  // const email_ref = useRef<HTMLInputElement | null>(null);
+  // const password_ref = useRef<HTMLInputElement | null>(null);
+  // const date_ref = useRef<HTMLInputElement | null>(null);
+  // const male_ref = useRef<HTMLInputElement | null>(null);
+  // const female_ref = useRef<HTMLInputElement | null>(null);
+  // const others_ref = useRef<HTMLInputElement | null>(null);
+  // // const gender_ref = useRef();
+  // const country_ref = useRef<HTMLInputElement | null>(null);
+  // const writing_ref = useRef<HTMLInputElement | null>(null);
+  // const design_ref = useRef<HTMLInputElement | null>(null);
+  // const coding_ref = useRef<HTMLInputElement | null>(null);
+  // const testing_ref = useRef<HTMLInputElement | null>(null);
+  // const aboutme_ref = useRef<HTMLInputElement | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
-    console.log("i am here", name_ref.current);
     e.preventDefault();
     // let gender = "";
     // collect value from the input fields.
-    const name = name_ref.current?.value.trim();
-    console.log(name);
-    const email = email_ref.current?.value;
-    const password = password_ref.current?.value;
-    const date = date_ref.current?.value;
-    const country = country_ref.current?.value;
-    const writing = writing_ref.current?.checked;
-    const design = design_ref.current?.checked;
-    const testing = testing_ref.current?.checked;
-    const coding = coding_ref.current?.checked;
-    const aboutMe = aboutme_ref.current?.value;
+    const name = inputref["name_ref"].current?.value.trim();
+    const email = inputref["email_ref"].current?.value;
+    const password = inputref["password_ref"].current?.value;
+    const date = inputref["date_ref"].current?.value;
+    const country = inputref["country_ref"].current?.value;
+    const writing = inputref["writing_ref"].current?.checked;
+    const design = inputref["design_ref"].current?.checked;
+    const testing = inputref["testing_ref"].current?.checked;
+    const coding = inputref["coding_ref"].current?.checked;
+    const aboutMe = inputref["aboutme_ref"].current?.value;
 
     // reset all custom validations:
     // name_ref.current?.setCustomValidity("");
@@ -147,9 +153,9 @@ const Form = () => {
     // for gender:
 
     if (
-      !male_ref.current?.checked &&
-      !female_ref.current?.checked &&
-      !others_ref.current?.checked
+      !inputref["male_ref"].current?.checked &&
+      !inputref["female_ref"].current?.checked &&
+      !inputref["others_ref"].current?.checked
     ) {
       // male_ref.current.setCustomValidity("Please select a gender.");
       newErros.gender = "Please select a gender.";
@@ -166,21 +172,27 @@ const Form = () => {
     if (Object.keys(newErros).length > 0) {
       setErrors(newErros);
     } else {
-      alert("Form Submitted.");
+      // Transition logic here
+      startTransition(async () => {
+        await new Promise((res) => setTimeout(res, 5000));
+      });
+
+      toast.success("Form Submitting!");
       setErrors({});
-      name_ref.current!.value = "";
-      email_ref.current!.value = "";
-      password_ref.current!.value = "";
-      date_ref.current!.value = "";
-      male_ref.current!.checked = false;
-      female_ref.current!.checked = false;
-      others_ref.current!.checked = false;
-      country_ref.current!.value = "Nepal";
-      writing_ref.current!.checked = false;
-      design_ref.current!.checked = false;
-      coding_ref.current!.checked = false;
-      testing_ref.current!.checked = false;
-      aboutme_ref.current!.value = "";
+
+      inputref["name_ref"].current!.value = "";
+      inputref["email_ref"].current!.value = "";
+      inputref["password_ref"].current!.value = "";
+      inputref["date_ref"].current!.value = "";
+      inputref["male_ref"].current!.checked = false;
+      inputref["female_ref"].current!.checked = false;
+      inputref["others_ref"].current!.checked = false;
+      inputref["country_ref"].current!.value = "Nepal";
+      inputref["writing_ref"].current!.checked = false;
+      inputref["design_ref"].current!.checked = false;
+      inputref["coding_ref"].current!.checked = false;
+      inputref["testing_ref"].current!.checked = false;
+      inputref["aboutme_ref"].current!.value = "";
     }
   };
   // report the validity:
@@ -206,8 +218,15 @@ const Form = () => {
             autoComplete="on"
             placeholder="Full Name"
             // name="fullname"
-            ref={name_ref}
+            ref={inputref["name_ref"]}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              if (errors.name) {
+                setErrors((prevError) => {
+                  return { ...prevError, name: "" };
+                });
+              }
+            }}
           />
           {errors.name && <p className="text-red-600">{errors.name}</p>}
 
@@ -216,8 +235,15 @@ const Form = () => {
             type="email"
             placeholder="Email"
             // name="email"
-            ref={email_ref}
+            ref={inputref["email_ref"]}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              if (errors.email) {
+                setErrors((prevError) => {
+                  return { ...prevError, email: "" };
+                });
+              }
+            }}
           />
           {errors.email && <p className="text-red-600">{errors.email}</p>}
 
@@ -226,8 +252,15 @@ const Form = () => {
             type="password"
             placeholder="Password"
             // name="password"
-            ref={password_ref}
+            ref={inputref["password_ref"]}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={() => {
+              if (errors.password) {
+                setErrors((prevError) => {
+                  return { ...prevError, password: "" };
+                });
+              }
+            }}
           />
           {errors.password && <p className="text-red-600">{errors.password}</p>}
 
@@ -237,8 +270,15 @@ const Form = () => {
             type="date"
             placeholder="Date of Birth"
             // name="dateOfbirth"
-            ref={date_ref}
+            ref={inputref["date_ref"]}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              if (errors.date) {
+                setErrors((prevError) => {
+                  return { ...prevError, date: "" };
+                });
+              }
+            }}
           />
           {errors.date && <p className="text-red-600">{errors.date}</p>}
         </div>
@@ -252,8 +292,15 @@ const Form = () => {
                 type="radio"
                 name="gender"
                 value="male"
-                ref={male_ref}
+                ref={inputref["male_ref"]}
                 // checked={gender === "male"}
+                onChange={(e) => {
+                  if (errors.gender) {
+                    setErrors((prevError) => {
+                      return { ...prevError, gender: "" };
+                    });
+                  }
+                }}
               />
               Male
             </label>
@@ -262,7 +309,7 @@ const Form = () => {
                 type="radio"
                 name="gender"
                 value="female"
-                ref={female_ref}
+                ref={inputref["female_ref"]}
                 // checked={gender === "female"}
               />
               Female
@@ -272,7 +319,7 @@ const Form = () => {
                 type="radio"
                 name="gender"
                 value="others"
-                ref={others_ref}
+                ref={inputref["others_ref"]}
                 // checked={gender === "others"}
               />
               Others
@@ -292,7 +339,7 @@ const Form = () => {
           <select
             id="country"
             // name="countries"
-            ref={country_ref}
+            ref={inputref["country_ref"]}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="Nepal">Nepal</option>
@@ -314,7 +361,14 @@ const Form = () => {
                 type="checkbox"
                 id="coding"
                 // name="coding"
-                ref={coding_ref}
+                ref={inputref["coding_ref"]}
+                onChange={(e) => {
+                  if (errors.coding) {
+                    setErrors((prevError) => {
+                      return { ...prevError, coding: "" };
+                    });
+                  }
+                }}
               />
               Coding
             </label>
@@ -323,7 +377,14 @@ const Form = () => {
                 type="checkbox"
                 id="design"
                 // name="design"
-                ref={design_ref}
+                ref={inputref["design_ref"]}
+                onChange={(e) => {
+                  if (errors.coding) {
+                    setErrors((prevError) => {
+                      return { ...prevError, coding: "" };
+                    });
+                  }
+                }}
               />
               Design
             </label>
@@ -332,7 +393,14 @@ const Form = () => {
                 type="checkbox"
                 id="writting"
                 // name="writing"
-                ref={writing_ref}
+                ref={inputref["writing_ref"]}
+                onChange={(e) => {
+                  if (errors.coding) {
+                    setErrors((prevError) => {
+                      return { ...prevError, coding: "" };
+                    });
+                  }
+                }}
               />
               Writing
             </label>
@@ -341,7 +409,14 @@ const Form = () => {
                 type="checkbox"
                 id="testing"
                 // name="testing"
-                ref={testing_ref}
+                ref={inputref["testing_ref"]}
+                onChange={(e) => {
+                  if (errors.coding) {
+                    setErrors((prevError) => {
+                      return { ...prevError, coding: "" };
+                    });
+                  }
+                }}
               />
               Testing
             </label>
@@ -354,20 +429,40 @@ const Form = () => {
           <textarea
             placeholder="Tell us about yourself"
             // name="aboutme"
-            ref={aboutme_ref}
+            ref={inputref["aboutme_ref"]}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              if (errors.aboutMe) {
+                setErrors((prevError) => {
+                  return { ...prevError, aboutMe: "" };
+                });
+              }
+            }}
           />
         </div>
         {errors.aboutMe && <p className="text-red-600">{errors.aboutMe}</p>}
 
         {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200 cursor-pointer"
-        >
-          Submit
-        </button>
+        <div className="flex gap-2 justify-center items-center ">
+          <div>
+            {pending ? (
+              <img
+                className="w-8 h-8"
+                src="https://media.tenor.com/t5DMW5PI8mgAAAAj/loading-green-loading.gif"
+                alt=""
+              />
+            ) : null}
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200 cursor-pointer"
+            disabled={pending}
+          >
+            Submit
+          </button>
+        </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
