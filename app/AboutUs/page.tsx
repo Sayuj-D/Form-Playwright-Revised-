@@ -2,8 +2,11 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <p className="text-2xl">This is a About us page</p>
+    <div className="pl-20">
+      <div className="flex-col flex gap-4">
+        <p className="text-3xl font-bold">This is a About page!</p>
+        <p className="">Welcome to About us page. </p>
+      </div>
     </div>
   );
 };
