@@ -28,7 +28,7 @@ export default function RootLayout({
     }
   }, [pathname, router]);
 
-  const hideNavbarRoutes = ["/", "/LogIn", "/SignUp"];
+  const hideNavbarRoutes = ["", "/LogIn", "/SignUp"];
   const shouldShowNavbar = !hideNavbarRoutes.includes(
     pathname.replace(/\/+$/, "")
   );

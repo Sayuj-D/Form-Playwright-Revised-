@@ -120,8 +120,11 @@ const Login = () => {
           >
             Login
           </button>
-          <Link href="/SignUp" className="text-red-400 text-[14px]">
-            Not Registered? SignUp
+          <Link
+            href="/SignUp"
+            className="text-gray-600 text-[14px] text-center"
+          >
+            Not Registered?<span className="text-blue-600"> SignUp</span>
           </Link>
         </form>
       </div>

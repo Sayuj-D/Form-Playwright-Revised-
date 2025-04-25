@@ -14,7 +14,7 @@ const Signup = () => {
     e.preventDefault();
 
     const newUser = { username, email, password };
-    if (!username && !email && !password) {
+    if (!username || !email || !password) {
       toast.warn("Please fill all the fields!", {
         position: "top-right",
         autoClose: 1000,
@@ -68,6 +68,7 @@ const Signup = () => {
           <input
             type="text"
             placeholder="UserName"
+            value={username}
             className="border-2 rounded-md p-2 border-slate-300"
             onChange={(e) => {
               setUsername(e.target.value);
@@ -77,6 +78,7 @@ const Signup = () => {
             type="email"
             placeholder="Email"
             className="border-2 rounded-md p-2 border-slate-300"
+            value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -85,6 +87,7 @@ const Signup = () => {
             type="password"
             placeholder="Password"
             className="border-2 rounded-md p-2 border-slate-300"
+            value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -97,8 +100,11 @@ const Signup = () => {
             Signup
           </button>
 
-          <Link href={"/LogIn"} className="text-blue-400">
-            Already Registered? Login
+          <Link
+            href={"/LogIn"}
+            className="text-gray-600 text-[14px] text-center"
+          >
+            Already Registered? <span className="text-blue-600">Login</span>
           </Link>
         </form>
       </div>
