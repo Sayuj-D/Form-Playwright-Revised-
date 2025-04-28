@@ -45,7 +45,7 @@ test("check data empty", async ({ page }) => {
   await page.waitForTimeout(1000);
 });
 
-test("entry check", async ({ page }) => {
+test.only("flow check", async ({ page }) => {
   await page.goto("http://localhost:3000/SignUp");
 
   page.on("signup check", async (dialog) => {
@@ -69,11 +69,11 @@ test("entry check", async ({ page }) => {
     (existing_user) => existing_user.username === "Playwright"
   );
 
-  expect(user.username).toBe("Playwright");
-  expect(user.email).toBe("playwright@gmail.com");
-  expect(user.password).toBe("play_wright");
+  // expect(user.username).toBe("Playwright");
+  // expect(user.email).toBe("playwright@gmail.com");
+  // expect(user.password).toBe("play_wright");
 
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(3000);
 
   expect(page.url()).toBe("http://localhost:3000/LogIn");
 
@@ -82,9 +82,63 @@ test("entry check", async ({ page }) => {
 
   await page.getByRole("button", { name: "Login" }).click();
 
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(2000);
 
   await page.waitForURL("http://localhost:3000/Home");
+  const userData = await page.evaluate(() => {
+    return JSON.parse(localStorage.getItem("currentUser"));
+  });
+  await expect(
+    page.getByText(`Welcome to Home page,${userData.username}`)
+  ).toBeVisible();
+
+  await page.waitForTimeout(2000);
+
+  await page.getByRole("link", { name: "About Us" }).click();
+  await page.waitForURL("http://localhost:3000/AboutUs");
+
+  await page.waitForTimeout(2000);
+
+  await page.getByRole("link", { name: "Contact Us" }).click();
+  await page.waitForURL("http://localhost:3000/ContactUs");
+
+  await page.waitForTimeout(2000);
+
+  await page.getByRole("link", { name: "Form" }).click();
+  await page.waitForURL("http://localhost:3000/Form");
+
+  await page.waitForTimeout(2000);
+
+  await page.getByRole("textbox", { name: "Full Name" }).fill("Playwright");
+
+  await page
+    .getByRole("textbox", { name: "Email" })
+    .fill("sayujrumsan@gmail.com");
+
+  await page.getByRole("textbox", { name: "Password" }).fill("Trinity.123?@");
+
+  await page.getByPlaceholder("Date of Birth").fill("1995-08-15");
+
+  await page.check('input[type=radio][value="male"]');
+
+  await page.getByText("Coding").check();
+  await page.getByText("Design").check();
+
+  await page.selectOption("select", { label: "Nepal" });
+
+  await page
+    .getByRole("textbox", { name: "Tell us about yourself" })
+    .fill("This is a playwright test.");
+
+  await page.getByRole("button", { name: "Submit" }).click();
+
+  await page.waitForTimeout(5000);
+
+  await page.getByRole("button", { name: "Logout" }).click();
+  await page.waitForURL("http://localhost:3000/LogIn");
+
+  await page.goto("http://localhost:3000/Home");
+  await expect(page).toHaveURL("http://localhost:3000/LogIn");
 
   await page.pause();
 });

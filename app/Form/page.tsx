@@ -2,7 +2,7 @@
 // import { console } from "inspector";
 import React, { startTransition, useRef, useState, useTransition } from "react";
 import { checkHere } from "@/components/utils/check";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 const Form = () => {
   // use of the useRef:
@@ -174,10 +174,34 @@ const Form = () => {
     } else {
       // Transition logic here
       startTransition(async () => {
-        await new Promise((res) => setTimeout(res, 5000));
+        await new Promise((res) => setTimeout(res, 3000));
       });
 
-      toast.success("Form Submitting!");
+      toast.warn("Form Submitting", {
+        position: "top-right",
+        autoClose: 1996,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setTimeout(() => {
+        toast.success("Form Submitted!", {
+          position: "top-right",
+          autoClose: 1996,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      }, 3000);
+
       setErrors({});
 
       inputref["name_ref"].current!.value = "";
