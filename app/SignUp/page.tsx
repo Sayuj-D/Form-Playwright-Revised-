@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import { useRouter } from "next/navigation";
+import toastdisplay from "@/components/utils/toastdisplay";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -15,17 +16,7 @@ const Signup = () => {
 
     const newUser = { username, email, password };
     if (!username || !email || !password) {
-      toast.warn("Please fill all the fields!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastdisplay.fillAllFields();
     } else {
       // Retrieve existing users from localStorage (or an empty array if no users exist)
       const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
@@ -36,24 +27,14 @@ const Signup = () => {
       // Save the updated users array back to localStorage
       localStorage.setItem("users", JSON.stringify(existingUsers));
 
-      toast.success("SignUp Successful!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastdisplay.signUpSuccessfull();
 
       setUsername("");
       setEmail("");
       setPassword("");
 
       setTimeout(() => {
-        router.push("/LogIn");
+        router.push("/login");
       }, 1000);
     }
   };
@@ -101,7 +82,7 @@ const Signup = () => {
           </button>
 
           <Link
-            href={"/LogIn"}
+            href={"/login"}
             className="text-gray-600 text-[14px] text-center"
           >
             Already Registered? <span className="text-blue-600">Login</span>

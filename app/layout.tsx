@@ -21,14 +21,14 @@ export default function RootLayout({
   // Redirect to Login if the user is not logged in and tries to access restricted pages
   useEffect(() => {
     const isLoggedIn = checkIfLoggedIn();
-    const restrictedPages = ["/Home", "/Form", "/AboutUs", "ContactUs"];
+    const restrictedPages = ["/home", "/form", "/aboutUs", "contactUs"];
 
     if (!isLoggedIn && restrictedPages.includes(pathname)) {
-      router.push("/LogIn"); // Redirect to Login page if not logged in
+      router.push("/login"); // Redirect to Login page if not logged in
     }
   }, [pathname, router]);
 
-  const hideNavbarRoutes = ["", "/LogIn", "/SignUp"];
+  const hideNavbarRoutes = ["", "/login", "/signup"];
   const shouldShowNavbar = !hideNavbarRoutes.includes(
     pathname.replace(/\/+$/, "")
   );
@@ -38,15 +38,15 @@ export default function RootLayout({
       <body>
         {shouldShowNavbar && (
           <header className="flex gap-8 bg-gray-300 p-6 justify-around">
-            <Link href="/Home">Home</Link>
-            <Link href="/AboutUs">About Us</Link>
-            <Link href="/ContactUs">Contact Us</Link>
-            <Link href="/Form">Form</Link>
+            <Link href="/home">Home</Link>
+            <Link href="/about">About Us</Link>
+            <Link href="/contact">Contact Us</Link>
+            <Link href="/form">Form</Link>
             <button
               onClick={() => {
                 localStorage.setItem("isLoggedIn", "false");
                 localStorage.removeItem("currentUser");
-                router.push("/LogIn");
+                router.push("/login");
               }}
               className="text-red-500"
             >

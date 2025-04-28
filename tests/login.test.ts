@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 
 test("goto page", async ({ page }) => {
-  await page.goto("http://localhost:3000/SignUp");
+  await page.goto("http://localhost:3000/signup");
   await page.pause();
 });
 
 test("data fill test", async ({ page }) => {
-  await page.goto("http://localhost:3000/SignUp");
+  await page.goto("http://localhost:3000/signup");
   await expect(page.getByPlaceholder("UserName")).toBeVisible();
   await expect(page.getByPlaceholder("Email")).toBeVisible();
   await expect(page.getByPlaceholder("Password")).toBeVisible();
@@ -14,7 +14,7 @@ test("data fill test", async ({ page }) => {
 });
 
 test("check data fill", async ({ page }) => {
-  await page.goto("http://localhost:3000/SignUp");
+  await page.goto("http://localhost:3000/signup");
 
   page.on("toast message test", async (dialog) => {
     expect(dialog.message()).toContain("SignUp Successful!");
@@ -29,7 +29,7 @@ test("check data fill", async ({ page }) => {
 });
 
 test("check data empty", async ({ page }) => {
-  await page.goto("http://localhost:3000/SignUp");
+  await page.goto("http://localhost:3000/signup");
 
   page.on("toast message test", async (dialog) => {
     expect(dialog.message()).toContain("Please fill all the fields!");
@@ -46,7 +46,7 @@ test("check data empty", async ({ page }) => {
 });
 
 test.only("flow check", async ({ page }) => {
-  await page.goto("http://localhost:3000/SignUp");
+  await page.goto("http://localhost:3000/signup");
 
   page.on("signup check", async (dialog) => {
     expect(dialog.message()).toContain("SignUp Successful!");
@@ -75,7 +75,7 @@ test.only("flow check", async ({ page }) => {
 
   await page.waitForTimeout(3000);
 
-  expect(page.url()).toBe("http://localhost:3000/LogIn");
+  expect(page.url()).toBe("http://localhost:3000/login");
 
   await page.getByPlaceholder("Email").fill("playwright@gmail.com");
   await page.getByPlaceholder("Password").fill("play_wright");
@@ -84,7 +84,7 @@ test.only("flow check", async ({ page }) => {
 
   await page.waitForTimeout(2000);
 
-  await page.waitForURL("http://localhost:3000/Home");
+  await page.waitForURL("http://localhost:3000/home");
   const userData = await page.evaluate(() => {
     return JSON.parse(localStorage.getItem("currentUser"));
   });
@@ -95,17 +95,17 @@ test.only("flow check", async ({ page }) => {
   await page.waitForTimeout(2000);
 
   await page.getByRole("link", { name: "About Us" }).click();
-  await page.waitForURL("http://localhost:3000/AboutUs");
+  await page.waitForURL("http://localhost:3000/about");
 
   await page.waitForTimeout(2000);
 
   await page.getByRole("link", { name: "Contact Us" }).click();
-  await page.waitForURL("http://localhost:3000/ContactUs");
+  await page.waitForURL("http://localhost:3000/contact");
 
   await page.waitForTimeout(2000);
 
   await page.getByRole("link", { name: "Form" }).click();
-  await page.waitForURL("http://localhost:3000/Form");
+  await page.waitForURL("http://localhost:3000/form");
 
   await page.waitForTimeout(2000);
 
@@ -135,10 +135,10 @@ test.only("flow check", async ({ page }) => {
   await page.waitForTimeout(5000);
 
   await page.getByRole("button", { name: "Logout" }).click();
-  await page.waitForURL("http://localhost:3000/LogIn");
+  await page.waitForURL("http://localhost:3000/login");
 
-  await page.goto("http://localhost:3000/Home");
-  await expect(page).toHaveURL("http://localhost:3000/LogIn");
+  await page.goto("http://localhost:3000/home");
+  await expect(page).toHaveURL("http://localhost:3000/login");
 
   await page.pause();
 });

@@ -2,7 +2,8 @@
 // import { console } from "inspector";
 import React, { startTransition, useRef, useState, useTransition } from "react";
 import { checkHere } from "@/components/utils/check";
-import { ToastContainer, toast, Bounce } from "react-toastify";
+import toastdisplay from "@/components/utils/toastdisplay";
+import { ToastContainer } from "react-toastify";
 
 const Form = () => {
   // use of the useRef:
@@ -177,29 +178,9 @@ const Form = () => {
         await new Promise((res) => setTimeout(res, 3000));
       });
 
-      toast.warn("Form Submitting", {
-        position: "top-right",
-        autoClose: 1996,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastdisplay.formSubmitting();
       setTimeout(() => {
-        toast.success("Form Submitted!", {
-          position: "top-right",
-          autoClose: 1996,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-        });
+        toastdisplay.formSubmitted();
       }, 3000);
 
       setErrors({});

@@ -2,7 +2,7 @@ import React from "react";
 // import Form from "@/components/Form";
 // import Form from "@/components/Form_again";
 // import Home from "./Home/page";
-import Signup from "./SignUp/page";
+import Signup from "./signup/page";
 
 const page = () => {
   return (
@@ -10,7 +10,7 @@ const page = () => {
       {/* <Form /> */}
       {/* <Form /> */}
       {/* <Home /> */}
-      <Signup/>
+      <Signup />
     </div>
   );
 };

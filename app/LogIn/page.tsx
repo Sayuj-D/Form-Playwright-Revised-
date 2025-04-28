@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import { useRouter } from "next/navigation";
+import toastdisplay from "@/components/utils/toastdisplay";
 
 const Login = () => {
   const [entered_email, setentered_Email] = useState("");
@@ -15,17 +16,7 @@ const Login = () => {
 
     // Check if either field is empty
     if (!entered_email || !entered_password) {
-      toast.warning("Empty field detected!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastdisplay.emptyField();
       return;
     }
 
@@ -40,47 +31,17 @@ const Login = () => {
 
     // If no user is found or password doesn't match, show error
     if (!userInDB) {
-      toast.error("User not found!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastdisplay.userNotFount();
       return; // Prevent further execution if user is not found
     }
 
     if (userInDB.password !== entered_password) {
-      toast.error("Incorrect password!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastdisplay.incorrectPassword();
       return; // Prevent further execution if password is incorrect
     }
 
     // If the credentials are correct
-    toast.success("Login Successful!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
+    toastdisplay.loginSuccess();
 
     // Save user session info in localStorage
     localStorage.setItem("isLoggedIn", "true");
@@ -88,7 +49,7 @@ const Login = () => {
 
     // Redirect to Home page after successful login
     setTimeout(() => {
-      router.push("/Home");
+      router.push("/home");
     }, 1000);
   };
 
@@ -121,7 +82,7 @@ const Login = () => {
             Login
           </button>
           <Link
-            href="/SignUp"
+            href="/signup"
             className="text-gray-600 text-[14px] text-center"
           >
             Not Registered?<span className="text-blue-600"> SignUp</span>
