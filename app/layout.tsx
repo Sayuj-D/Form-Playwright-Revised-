@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useEffect } from "react";
 import "./globals.css";
 
-// Helper function to check if the user is logged in
+// Helper function to check if user is logged in based on JWT token
 const checkIfLoggedIn = () => {
-  return localStorage.getItem("isLoggedIn") === "true";
+  const token = localStorage.getItem("authToken");
+  return !!token; // true if token exists
 };
 
 export default function RootLayout({
@@ -18,13 +19,12 @@ export default function RootLayout({
   const pathname = usePathname();
   const router = useRouter();
 
-  // Redirect to Login if the user is not logged in and tries to access restricted pages
   useEffect(() => {
     const isLoggedIn = checkIfLoggedIn();
-    const restrictedPages = ["/home", "/form", "/aboutUs", "contactUs"];
+    const restrictedPages = ["/home", "/form", "/about", "/contact"];
 
     if (!isLoggedIn && restrictedPages.includes(pathname)) {
-      router.push("/login"); // Redirect to Login page if not logged in
+      router.push("/login");
     }
   }, [pathname, router]);
 
@@ -44,8 +44,9 @@ export default function RootLayout({
             <Link href="/form">Form</Link>
             <button
               onClick={() => {
-                localStorage.setItem("isLoggedIn", "false");
+                localStorage.removeItem("authToken");
                 localStorage.removeItem("currentUser");
+                // router.refresh(); // optional if you want instant logout effect
                 router.push("/login");
               }}
               className="text-red-500"

@@ -2,52 +2,56 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ToastContainer, toast, Bounce } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import toastdisplay from "@/components/utils/toastdisplay";
+import jwtEncode from "jwt-encode"; // <- NEW LIBRARY
 
 const Login = () => {
   const [entered_email, setentered_Email] = useState("");
   const [entered_password, setentered_Password] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Check if either field is empty
     if (!entered_email || !entered_password) {
       toastdisplay.emptyField();
       return;
     }
 
-    // retrive pre-existing data from localstorage.
-    const userData = JSON.parse(localStorage.getItem("users")) || [];
-
-    // find is used to search the array and retrive the first data.
+    const userData = JSON.parse(localStorage.getItem("users") || "[]");
 
     const userInDB = userData.find(
-      (userInDB) => userInDB.email === entered_email
+      (user: { email: string }) => user.email === entered_email
     );
 
-    // If no user is found or password doesn't match, show error
     if (!userInDB) {
       toastdisplay.userNotFount();
-      return; // Prevent further execution if user is not found
+      return;
     }
 
     if (userInDB.password !== entered_password) {
       toastdisplay.incorrectPassword();
-      return; // Prevent further execution if password is incorrect
+      return;
     }
 
-    // If the credentials are correct
+    // ✅ Successful login
     toastdisplay.loginSuccess();
 
-    // Save user session info in localStorage
-    localStorage.setItem("isLoggedIn", "true");
+    // ✅ Generate JWT token
+    const payload = {
+      username: userInDB.username,
+      email: userInDB.email,
+      time: new Date().getTime(),
+    };
+    const secret = "your-secret-key"; // You can put any random string here
+    const token = jwtEncode(payload, secret);
+
+    // ✅ Save token to localStorage
+    localStorage.setItem("authToken", token);
     localStorage.setItem("currentUser", JSON.stringify(userInDB));
 
-    // Redirect to Home page after successful login
     setTimeout(() => {
       router.push("/home");
     }, 1000);
@@ -65,14 +69,12 @@ const Login = () => {
             type="email"
             placeholder="Email"
             className="border-2 border-slate-400 rounded-md p-2"
-            // value={entered_email}
             onChange={(e) => setentered_Email(e.target.value)}
           />
           <input
             type="password"
             placeholder="Password"
             className="border-2 border-slate-400 rounded-md p-2"
-            // value={entered_password}
             onChange={(e) => setentered_Password(e.target.value)}
           />
           <button
