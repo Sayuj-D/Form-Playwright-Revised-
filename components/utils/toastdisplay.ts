@@ -1,117 +1,30 @@
 import { toast, Bounce } from "react-toastify";
 
+const showToast = (type, message, theme = "light", autoClose = 1000) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose,
+    hideProgressBar: true,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme,
+    transition: Bounce,
+  });
+};
+
 const toastdisplay = {
-  userNotFount: () => {
-    toast.error("User not found!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  },
-
-  emptyField: () => {
-    toast.warning("Empty field detected!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  },
-
-  incorrectPassword: () => {
-    toast.error("Incorrect password!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  },
-
-  loginSuccess: () => {
-    toast.success("Login Successful!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  },
-
-  fillAllFields: () => {
-    toast.warn("Please fill all the fields!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  },
-
-  signUpSuccessfull: () => {
-    toast.success("SignUp Successful!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  },
-
-  formSubmitting: () => {
-    toast.warn("Form Submitting", {
-      position: "top-right",
-      autoClose: 1996,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  },
-
-  formSubmitted: () => {
-    toast.success("Form Submitted!", {
-      position: "top-right",
-      autoClose: 1996,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  },
+  userNotFound: () => showToast("error", "User not found!"),
+  emptyField: () => showToast("warning", "Empty field detected!"),
+  incorrectPassword: () => showToast("error", "Incorrect password!"),
+  loginSuccess: () => showToast("success", "Login Successful!"),
+  fillAllFields: () =>
+    showToast("warn", "Please fill all the fields!", "colored"),
+  signUpSuccessfull: () =>
+    showToast("success", "SignUp Successful!", "colored"),
+  formSubmitting: () => showToast("warn", "Form Submitting", "colored", 1996),
+  formSubmitted: () => showToast("success", "Form Submitted!", "colored", 1996),
 };
 
 export default toastdisplay;

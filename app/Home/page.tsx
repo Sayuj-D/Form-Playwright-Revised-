@@ -1,13 +1,25 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
+// import { useAuthRedirect } from "@/app/lib/hooks/useAuthRedirect";
 
 const Page = () => {
-  const [signedInUser, setSignedInUser] = useState("");
+  // useAuthRedirect(); // Protect the route if token is missing/expired
+
+  const [signedInUser, setSignedInUser] = useState<{ username: string } | null>(
+    null
+  );
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("currentUser"));
+    const userData = localStorage.getItem("currentUser");
     if (userData) {
-      setSignedInUser(userData);
+      try {
+        const parsedUser = JSON.parse(userData);
+        setSignedInUser(parsedUser);
+      } catch (error) {
+        console.error("Failed to parse user data:", error);
+        setSignedInUser(null);
+      }
     }
   }, []);
 
@@ -17,7 +29,7 @@ const Page = () => {
         <p className="text-3xl font-bold">This is a Home page!</p>
         <p>
           Welcome to Home page,
-          {signedInUser.username}
+          {signedInUser?.username || "Guest"}
         </p>
       </div>
     </div>

@@ -1,3 +1,4 @@
+// app/signup/page.tsx
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
@@ -11,7 +12,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handelSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username || !email || !password) {
@@ -21,19 +22,31 @@ const Signup = () => {
 
     const newUser = { username, email, password };
 
-    const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    existingUsers.push(newUser);
-    localStorage.setItem("users", JSON.stringify(existingUsers));
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
 
-    toastdisplay.signUpSuccessfull();
+      const result = await response.json();
 
-    setUsername("");
-    setEmail("");
-    setPassword("");
-
-    setTimeout(() => {
-      router.push("/login");
-    }, 1000);
+      if (response.ok) {
+        localStorage.setItem("authToken", result.token);
+        toastdisplay.signUpSuccessfull();
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      } else {
+        // toastdisplay.error(result.error || "Signup failed.");
+        alert("signup failed");
+      }
+    } catch {
+      // toastdisplay.error("Something went wrong. Please try again.");
+      alert("try again");
+    }
   };
 
   return (
@@ -42,28 +55,34 @@ const Signup = () => {
         <h1 className="text-2xl font-medium">SignUp Form</h1>
         <form
           className="flex flex-col gap-5 bg-slate-100 w-[400px] p-6 rounded-2xl"
-          onSubmit={handelSubmit}
+          onSubmit={handleSubmit}
         >
           <input
             type="text"
             placeholder="UserName"
             value={username}
             className="border-2 rounded-md p-2 border-slate-300"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
           />
           <input
             type="email"
             placeholder="Email"
-            value={email}
             className="border-2 rounded-md p-2 border-slate-300"
-            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
           />
           <input
             type="password"
             placeholder="Password"
-            value={password}
             className="border-2 rounded-md p-2 border-slate-300"
-            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
 
           <button
@@ -73,7 +92,10 @@ const Signup = () => {
             Signup
           </button>
 
-          <Link href="/login" className="text-gray-600 text-[14px] text-center">
+          <Link
+            href={"/login"}
+            className="text-gray-600 text-[14px] text-center"
+          >
             Already Registered? <span className="text-blue-600">Login</span>
           </Link>
         </form>

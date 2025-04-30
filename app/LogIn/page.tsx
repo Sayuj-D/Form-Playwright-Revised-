@@ -1,3 +1,4 @@
+// app/login/page.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -5,56 +6,50 @@ import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import toastdisplay from "@/components/utils/toastdisplay";
-import jwtEncode from "jwt-encode"; // <- NEW LIBRARY
 
 const Login = () => {
-  const [entered_email, setentered_Email] = useState("");
-  const [entered_password, setentered_Password] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!entered_email || !entered_password) {
+    if (!enteredEmail || !enteredPassword) {
       toastdisplay.emptyField();
       return;
     }
 
-    const userData = JSON.parse(localStorage.getItem("users") || "[]");
+    const loginDetails = { email: enteredEmail, password: enteredPassword };
 
-    const userInDB = userData.find(
-      (user: { email: string }) => user.email === entered_email
-    );
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginDetails),
+      });
 
-    if (!userInDB) {
-      toastdisplay.userNotFount();
-      return;
+      const result = await response.json();
+      console.log("json", result);
+      // console.log(object);
+      if (response.ok) {
+        localStorage.setItem("authToken", result.token); // Store JWT token
+        toastdisplay.loginSuccess();
+
+        setTimeout(() => {
+          router.push("/home");
+        }, 1000);
+      } else {
+        // toastdisplay.error(result.error || "Login failed.");
+        alert("login failed");
+      }
+    } catch (err) {
+      console.log(err);
+      // toastdisplay.error("Something went wrong. Please try again.");
+      alert("try again");
     }
-
-    if (userInDB.password !== entered_password) {
-      toastdisplay.incorrectPassword();
-      return;
-    }
-
-    // ✅ Successful login
-    toastdisplay.loginSuccess();
-
-    // ✅ Generate JWT token
-    const payload = {
-      username: userInDB.username,
-      email: userInDB.email,
-      time: new Date().getTime(),
-    };
-    const secret = "your-secret-key"; // You can put any random string here
-    const token = jwtEncode(payload, secret);
-
-    // ✅ Save token to localStorage
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("currentUser", JSON.stringify(userInDB));
-
-    setTimeout(() => {
-      router.push("/home");
-    }, 1000);
   };
 
   return (
@@ -69,13 +64,15 @@ const Login = () => {
             type="email"
             placeholder="Email"
             className="border-2 border-slate-400 rounded-md p-2"
-            onChange={(e) => setentered_Email(e.target.value)}
+            value={enteredEmail}
+            onChange={(e) => setEnteredEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder="Password"
             className="border-2 border-slate-400 rounded-md p-2"
-            onChange={(e) => setentered_Password(e.target.value)}
+            value={enteredPassword}
+            onChange={(e) => setEnteredPassword(e.target.value)}
           />
           <button
             className="bg-blue-500 text-white px-4 py-2 font-medium text-[18px] rounded-md cursor-pointer"
