@@ -4,43 +4,14 @@ import { checkHere } from "@/components/utils/check";
 import toastdisplay from "@/components/utils/toastdisplay";
 import { ToastContainer } from "react-toastify";
 
-const inputNames = [
-  "name",
-  "email",
-  "password",
-  "date",
-  "country",
-  "aboutMe",
-  "male",
-  "female",
-  "others",
-  "writing",
-  "design",
-  "coding",
-  "testing",
-] as const;
+import { inputNames } from "@/components/utils/form_inputnames";
+import { inputRefs } from "@/components/utils/form_inputnames";
 
 type InputKeys = (typeof inputNames)[number];
 
 const Form = () => {
   const [errors, setErrors] = useState<checkHere>({});
   const [pending, startTransition] = useTransition();
-
-  const inputRefs = useRef<Record<InputKeys, HTMLInputElement | null>>({
-    name: null,
-    email: null,
-    password: null,
-    date: null,
-    country: null,
-    aboutMe: null,
-    male: null,
-    female: null,
-    others: null,
-    writing: null,
-    design: null,
-    coding: null,
-    testing: null,
-  });
 
   const resetError = (field: keyof checkHere) => {
     if (errors[field]) {

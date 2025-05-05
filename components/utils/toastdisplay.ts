@@ -1,6 +1,6 @@
 import { toast, Bounce } from "react-toastify";
 
-const showToast = (message, type, theme = "colored") => {
+const showToast = (message, type, theme) => {
   toast[type](message, {
     position: "top-right",
     autoClose: 2000,
@@ -15,14 +15,16 @@ const showToast = (message, type, theme = "colored") => {
 };
 
 const toastdisplay = {
-  userNotFound: () => showToast("User not found", "error"),
-  emptyField: () => showToast("Empty field detected!", "warning"),
-  incorrectPassword: () => showToast("Incorrect password!", "error"),
-  loginSuccess: () => showToast("Login Successful!", "success"),
-  fillAllFields: () => showToast("Please fill all the fields!", "warning"),
-  signUpSuccessfull: () => showToast("SignUp Successful!", "success"),
-  formSubmitting: () => showToast("Form Submitting", "warning"),
-  formSubmitted: () => showToast("Form Submitted!", "success"),
+  userNotFound: () => showToast("User not found", "error", "light"),
+  emptyField: () => showToast("Empty field detected!", "warning", "light"),
+  incorrectPassword: () => showToast("Incorrect password!", "error", "light"),
+  loginSuccess: () => showToast("Login Successful!", "success", "colored"),
+  fillAllFields: () =>
+    showToast("Please fill all the fields!", "warning", "light"),
+  signUpSuccessfull: () =>
+    showToast("SignUp Successful!", "success", "colored"),
+  formSubmitting: () => showToast("Form Submitting", "warning", "light"),
+  formSubmitted: () => showToast("Form Submitted!", "success", "colored"),
 };
 
 export default toastdisplay;
