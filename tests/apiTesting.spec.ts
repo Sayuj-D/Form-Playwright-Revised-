@@ -5,7 +5,17 @@ var userid;
 test("Get users - GET", async ({ request }) => {
   const response = await request.get("https://reqres.in/api/users?page=2");
   console.log(await response.json());
+
+  const text = await response.text();
+  expect(text).toContain("Michael");
+  expect(text).toContain("lindsay.ferguson@reqres.in");
+
   expect(response.status()).toBe(200);
+});
+
+test("Get users fail test", async ({ request }) => {
+  const response = await request.get("https://reqres.in/api/usr?page=2");
+  expect(response.status()).toBe(401);
 });
 
 test("Create users - POST", async ({ request }) => {
@@ -17,7 +27,7 @@ test("Create users - POST", async ({ request }) => {
 
     headers: {
       "x-api-key": "reqres-free-v1",
-      // negative case test,
+      // negative case test done
       "Content-Type": "application/json",
     },
   });
@@ -43,7 +53,7 @@ test("Update users - PUT", async ({ request }) => {
 
   const res = await response.json();
   console.log(res);
-  // response check
+  // response check done
   expect(response.status()).toBe(200);
 });
 
