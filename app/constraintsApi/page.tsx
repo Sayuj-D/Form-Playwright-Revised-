@@ -2,9 +2,9 @@
 import React, { useRef } from "react";
 
 const Constraintsform = () => {
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const validEmails = [
     "sayujrumsan@gmail.com",
@@ -12,8 +12,13 @@ const Constraintsform = () => {
     "runsan@gmail.com",
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Ensure the refs are not null
+    if (!nameRef.current || !emailRef.current || !passwordRef.current) {
+      return;
+    }
 
     // Reset custom messages
     nameRef.current.setCustomValidity("");
@@ -60,43 +65,45 @@ const Constraintsform = () => {
   };
 
   return (
-    <div className="bg-blue-50 p-8 rounded-2xl max-w-[400px]">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-6 max-w-[400px]"
-        noValidate
-      >
-        <input
-          ref={nameRef}
-          type="text"
-          name="name"
-          placeholder="Name"
-          required
-          className="border-2 rounded-md border-slate-400 py-2 px-2"
-        />
-        <input
-          ref={emailRef}
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          className="border-2 rounded-md border-slate-400 py-2 px-2"
-        />
-        <input
-          ref={passwordRef}
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          className="border-2 rounded-md border-slate-400 py-2 px-2"
-        />
-        <button
-          type="submit"
-          className="bg-amber-200 rounded-md py-2 cursor-pointer"
+    <div className="flex justify-center items-center h-screen">
+      <div className="bg-blue-50 p-8 rounded-2xl max-w-[400px]">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-6 max-w-[400px]"
+          noValidate
         >
-          Submit
-        </button>
-      </form>
+          <input
+            ref={nameRef}
+            type="text"
+            name="name"
+            placeholder="Name"
+            required
+            className="border-2 rounded-md border-slate-400 py-2 px-2"
+          />
+          <input
+            ref={emailRef}
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            className="border-2 rounded-md border-slate-400 py-2 px-2"
+          />
+          <input
+            ref={passwordRef}
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            className="border-2 rounded-md border-slate-400 py-2 px-2"
+          />
+          <button
+            type="submit"
+            className="bg-amber-200 rounded-md py-2 cursor-pointer"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

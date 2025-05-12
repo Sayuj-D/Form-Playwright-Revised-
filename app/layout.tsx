@@ -44,6 +44,7 @@ export default function RootLayout({
             <Link href="/contact">Contact Us</Link>
             <Link href="/form">Form</Link>
             <Link href="/constraintsApi">Constraints Form</Link>
+            <Link href="/apiTesting">API testing</Link>
             <button
               onClick={() => {
                 localStorage.removeItem("authToken"); // Remove JWT token
